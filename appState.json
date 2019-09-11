@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "testIrelndsns/lambda.js",
-        "code": "let AWS = require('aws-sdk');\nlet SL_AWS = require('slappforge-sdk-aws');\nconst sqs = new SL_AWS.SQS(AWS);\n\nexports.handler = function (event, context, callback) {\n    sqs.sendMessage({\n        MessageBody: 'test1',\n        QueueUrl: `https://sqs.${process.env.AWS_REGION}.amazonaws.com/${process.env.SIGMA_AWS_ACC_ID}/testsqs`,\n        DelaySeconds: '0',\n        MessageAttributes: {}\n    }, function (data) {\n                            console.log(\"dataaaaaaa\");\n                            console.log(data);\n\n        // your logic (logging etc) to handle successful message delivery, should be here\n    }, function (error) {\n        console.log(\"errrrrrrrrr\");\n        console.log(error);\n        // your logic (logging etc) to handle failures, should be here\n    });\n\n\n    callback(null, { \"message\": \"Successfully executed\" });\n}",
+        "code": "\nexports.handler = function (event, context, callback) {\n\n    callback(event);\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -39,8 +39,8 @@
           }
         ],
         "testCases": {
-          "4535031c-8e0d-442d-b684-c4202a70a467": {
-            "id": "4535031c-8e0d-442d-b684-c4202a70a467",
+          "752f6095-04aa-477a-ad11-164fd6d49223": {
+            "id": "752f6095-04aa-477a-ad11-164fd6d49223",
             "name": "Test event",
             "functionId": "9725b19d-e0cf-43af-8923-57c0cb45ff3d",
             "event": "{\r\n    \"key1\": \"value1\",\r\n    \"key2\": \"value2\",\r\n    \"key3\": \"value3\"\r\n}",
@@ -79,7 +79,8 @@
           "maximumMessageSize": 256,
           "receiveMessageWaitTime": 0,
           "deadLetterQueueName": "",
-          "contentBasedDeduplication": false
+          "contentBasedDeduplication": false,
+          "createdByApp": true
         }
       }
     },
@@ -123,7 +124,7 @@
     "projectRegion": "eu-west-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1568204287787
+    "lastSave": 1568204691032
   },
   "VCS_STATE": {
     "provider": "GitHub",
