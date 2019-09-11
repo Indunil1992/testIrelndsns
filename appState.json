@@ -22,7 +22,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "testIrelndsns/lambda.js",
-        "code": "let AWS = require('aws-sdk');\nconst sns = new AWS.SNS();\n\nexports.handler = function (event, context, callback) {\n    sns.listSubscriptionsByTopic({\n        TopicArn: 'arn:aws:sns:eu-west-1:318300609668:testinddR'\n    }).promise()\n        .then(data => {\n        console.log(\"dataaaa\");\n        console.log(data);\n            // your code goes here\n        })\n        .catch(err => {\n            console.log(\"errrrr\");\n            console.log(err);\n            // error handling goes here\n        });\n\n    callback(null, { \"message\": \"Successfully executed\" });\n}",
+        "code": "let AWS = require('aws-sdk');\nlet SL_AWS = require('slappforge-sdk-aws');\nconst sqs = new SL_AWS.SQS(AWS);\n\nexports.handler = function (event, context, callback) {\n    sqs.receiveMessage({\n        QueueUrl: `https://sqs.${process.env.AWS_REGION}.amazonaws.com/${process.env.SIGMA_AWS_ACC_ID}/testsqs`,\n        AttributeNames: ['All'],\n        MaxNumberOfMessages: '1',\n        VisibilityTimeout: '30',\n        WaitTimeSeconds: '0'\n    }).promise()\n        .then(receivedMsgData => {\n            if (!!(receivedMsgData) && !!(receivedMsgData.Messages)) {\n                let receivedMessages = receivedMsgData.Messages;\n                receivedMessages.forEach(message => {\n                    console.log(\"receivedMsgData\");\n                    console.log(receivedMsgData);\n                    // your logic to access each message through out the loop. Each message is available under variable message \n                    // within this block\n                });\n            } else {\n                console.log(\"noo msges\");\n                // No messages to process\n            }\n        })\n        .catch(err => {\n            console.log(\"errrrrrrrr\");\n           console.log(err);\n            // error handling goes here\n        });\n\n    callback(null, { \"message\": \"Successfully executed\" });\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -32,13 +32,15 @@
         },
         "triggers": [
           {
-            "resourceName": "snseuWest1testsns",
-            "config": {}
+            "resourceName": "sqstestsqs",
+            "config": {
+              "BatchSize": "10"
+            }
           }
         ],
         "testCases": {
-          "82ada712-f695-45a1-941b-82c587c86153": {
-            "id": "82ada712-f695-45a1-941b-82c587c86153",
+          "d2b2ef27-1f1b-4f59-bd31-3e3ba1c9225e": {
+            "id": "d2b2ef27-1f1b-4f59-bd31-3e3ba1c9225e",
             "name": "Test event",
             "functionId": "9725b19d-e0cf-43af-8923-57c0cb45ff3d",
             "event": "{\r\n    \"key1\": \"value1\",\r\n    \"key2\": \"value2\",\r\n    \"key3\": \"value3\"\r\n}",
@@ -53,40 +55,31 @@
     ],
     "currentFileId": "9725b19d-e0cf-43af-8923-57c0cb45ff3d",
     "resources": {
-      "snseuWest1testsns": {
-        "name": "snseuWest1testsns",
-        "type": "SNS",
+      "sqstestsqs": {
+        "name": "sqstestsqs",
+        "type": "SQS",
         "config": {
-          "topicMode": 0,
-          "topicName": "testsns",
-          "topicArn": "arn:aws:sns:eu-west-1:318300609668:testsns",
-          "topicRegion": "eu-west-1",
-          "snsType": 0,
-          "topicDisplayName": "sns",
-          "subscriptions": [
-            {
-              "type": "email",
-              "endpoint": "indunil@adroitlogic.com"
-            }
-          ]
-        }
-      },
-      "snseuWest1testinddR": {
-        "name": "snseuWest1testinddR",
-        "type": "SNS",
-        "config": {
-          "topicMode": 0,
-          "topicName": "testinddR",
-          "topicArn": "arn:aws:sns:eu-west-1:318300609668:testinddR",
-          "topicRegion": "eu-west-1",
-          "snsType": 0,
-          "topicDisplayName": "snsRR",
-          "subscriptions": [
-            {
-              "type": "email-json",
-              "endpoint": "sachithrarajapakse1992@gmail.com"
-            }
-          ]
+          "mode": 0,
+          "existing": false,
+          "name": "testsqs",
+          "url": "https://sqs.eu-west-1.amazonaws.com/318300609668/testsqs",
+          "selectedRegion": "eu-west-1",
+          "deliveryDelay": 0,
+          "deliveryDelayUnit": "seconds",
+          "useRedrivePolicy": false,
+          "useSSE": false,
+          "kmsCustomerMasterKey": "default",
+          "accountId": "318300609668",
+          "dataKeyReusePeriod": 5,
+          "queueType": "standardQueue",
+          "defaultVisibilityTimeout": "60",
+          "defaultVisibilityTimeoutUnit": "seconds",
+          "messageRetentionPeriod": 4,
+          "messageRetentionPeriodUnit": "days",
+          "maximumMessageSize": 256,
+          "receiveMessageWaitTime": 0,
+          "deadLetterQueueName": "",
+          "contentBasedDeduplication": false
         }
       }
     },
@@ -112,6 +105,13 @@
           "version": "2.176.0",
           "dev": true,
           "notRemovable": false
+        },
+        "slappforge-sdk-aws": {
+          "name": "slappforge-sdk-aws",
+          "language": "javascript",
+          "version": "0.0.5",
+          "dev": false,
+          "notRemovable": false
         }
       }
     }
@@ -123,7 +123,7 @@
     "projectRegion": "eu-west-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1568202987717
+    "lastSave": 1568204019445
   },
   "VCS_STATE": {
     "provider": "GitHub",
