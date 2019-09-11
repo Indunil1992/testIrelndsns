@@ -1,0 +1,135 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "6550af93-1c18-4292-a108-09a3fd22dcc5": {
+        "id": "6550af93-1c18-4292-a108-09a3fd22dcc5",
+        "parent": null,
+        "name": "testIrelndsns",
+        "type": "DIRECTORY",
+        "isDirectory": true,
+        "children": [
+          "9725b19d-e0cf-43af-8923-57c0cb45ff3d"
+        ],
+        "isRemovable": false,
+        "filePath": "testIrelndsns"
+      },
+      "9725b19d-e0cf-43af-8923-57c0cb45ff3d": {
+        "id": "9725b19d-e0cf-43af-8923-57c0cb45ff3d",
+        "parent": "6550af93-1c18-4292-a108-09a3fd22dcc5",
+        "name": "lambda.js",
+        "type": "JS_LAMBDA",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "testIrelndsns/lambda.js",
+        "code": "let AWS = require('aws-sdk');\nconst sns = new AWS.SNS();\n\nexports.handler = function (event, context, callback) {\n    sns.listSubscriptionsByTopic({\n        TopicArn: 'arn:aws:sns:eu-west-1:318300609668:testinddR'\n    }).promise()\n        .then(data => {\n            // your code goes here\n        })\n        .catch(err => {\n            // error handling goes here\n        });\n\n    callback(null, { \"message\": \"Successfully executed\" });\n}",
+        "config": {
+          "runtime": "nodejs8.10",
+          "handler": "handler",
+          "timeout": 60,
+          "memory": 128,
+          "layers": []
+        },
+        "triggers": [
+          {
+            "resourceName": "snseuWest1testsns",
+            "config": {}
+          }
+        ],
+        "testCases": {
+          "82ada712-f695-45a1-941b-82c587c86153": {
+            "id": "82ada712-f695-45a1-941b-82c587c86153",
+            "name": "Test event",
+            "functionId": "9725b19d-e0cf-43af-8923-57c0cb45ff3d",
+            "event": "{\r\n    \"key1\": \"value1\",\r\n    \"key2\": \"value2\",\r\n    \"key3\": \"value3\"\r\n}",
+            "eventTemplate": "hello-world"
+          }
+        }
+      }
+    },
+    "rootNode": "6550af93-1c18-4292-a108-09a3fd22dcc5",
+    "openFiles": [
+      "9725b19d-e0cf-43af-8923-57c0cb45ff3d"
+    ],
+    "currentFileId": "9725b19d-e0cf-43af-8923-57c0cb45ff3d",
+    "resources": {
+      "snseuWest1testsns": {
+        "name": "snseuWest1testsns",
+        "type": "SNS",
+        "config": {
+          "topicMode": 0,
+          "topicName": "testsns",
+          "topicArn": "arn:aws:sns:eu-west-1:318300609668:testsns",
+          "topicRegion": "eu-west-1",
+          "snsType": 0,
+          "topicDisplayName": "sns",
+          "subscriptions": [
+            {
+              "type": "email",
+              "endpoint": "indunil@adroitlogic.com"
+            }
+          ]
+        }
+      },
+      "snseuWest1testinddR": {
+        "name": "snseuWest1testinddR",
+        "type": "SNS",
+        "config": {
+          "topicMode": 0,
+          "topicName": "testinddR",
+          "topicArn": "arn:aws:sns:eu-west-1:318300609668:testinddR",
+          "topicRegion": "eu-west-1",
+          "snsType": 0,
+          "topicDisplayName": "snsRR",
+          "subscriptions": [
+            {
+              "type": "email-json",
+              "endpoint": "sachithrarajapakse1992@gmail.com"
+            }
+          ]
+        }
+      }
+    },
+    "customTemplate": {
+      "dialect": null,
+      "definitions": null
+    },
+    "envVariables": [
+      {
+        "lambdaId": "all",
+        "varKey": "SIGMA_AWS_ACC_ID",
+        "varValue": null,
+        "shouldPersist": false,
+        "displayOnly": false,
+        "editable": false
+      }
+    ],
+    "packageJSON": {
+      "dependencies": {
+        "aws-sdk": {
+          "name": "aws-sdk",
+          "language": "javascript",
+          "version": "2.176.0",
+          "dev": true,
+          "notRemovable": false
+        }
+      }
+    }
+  },
+  "PROJECT_META": {
+    "projectName": "testIrelndsns",
+    "projectDescription": "",
+    "projectVersion": "1.0.0",
+    "projectRegion": "eu-west-1",
+    "platform": "AWS",
+    "platformRegions": {},
+    "lastSave": 1568202397293
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "testIrelndsns",
+      "url": "https://github.com/Indunil1992/testIrelndsns"
+    }
+  }
+}
